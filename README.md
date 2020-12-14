@@ -1,6 +1,6 @@
 # Planning_Module
 
-// 경로 도는거 GIF  
+![main](https://user-images.githubusercontent.com/55074554/102064247-6a74d900-3e3a-11eb-9b44-2c0ea2d77908.gif) 
 
  이 레파지토리는 무인차량의 경로추종 프레임워크를 단순화하기 위해 제작되었습니다. \
 필자가 2020 국제 창작 자동차 대회에 출전할 때 직접 제작했었던 Korus팀의 판단 프레임워크를 일부 수정했음을 밝힙니다.
@@ -26,8 +26,7 @@
 ---
 
 ## 1장 프레임워크 구성
-//기술보고서의 프레임워크 사진
-
+![Framework](이미지 URL)
 Camrera, LiDAR, GPS, IMU 등의 센서로부터 데이터를 입력받아 지역경로를 생성한 뒤 제어파트에 전달합니다.  
 Control_pkg는 메인 루프가 주기적으로 반복되며 다른 모듈을 호출하는 패키지의 핵심 모듈입니다.  
 모든 input data는 콜백함수를 통해 Data Warehouse에 저장되고, EventHandler에서는 매 주기마다 호출되며   
@@ -78,5 +77,8 @@ imu를 포함해서 칼만필터 등을 이용해 퓨전한다면 GPS의 Heading
 2. 일정한 거리까지의 3차함수
 
 현재 차량의 위치에서 가장 가까운 전역경로에 수렴할 수 있는 지역경로를 만들어야 한다.
-지역경로를 생성하는 알고리즘은 Frenet Optimal Trajectory알고리즘을 사용했다. [논문링크](#linklink)  
+
+![local](https://user-images.githubusercontent.com/55074554/102064236-6648bb80-3e3a-11eb-83db-891d2527b5f7.gif)
+
+지역경로를 생성하는 알고리즘은 Frenet Optimal Trajectory알고리즘을 사용했다. [논문링크](http://video.udacity-data.com.s3.amazonaws.com/topher/2017/July/595fd482_werling-optimal-trajectory-generation-for-dynamic-street-scenarios-in-a-frenet-frame/werling-optimal-trajectory-generation-for-dynamic-street-scenarios-in-a-frenet-frame.pdf)  
 본 프레임워크는 경로를 샘플링한 후 좌표의 집합을 전송하거나, 샘플링된 좌표를 3차함수로 근사시켜 제어측에 제공한다.
