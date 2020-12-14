@@ -25,26 +25,32 @@
 
 ---
 
-## 1장 프레임워크 구성
-![Framework](이미지 URL)
-Camrera, LiDAR, GPS, IMU 등의 센서로부터 데이터를 입력받아 지역경로를 생성한 뒤 제어파트에 전달합니다.  
-Control_pkg는 메인 루프가 주기적으로 반복되며 다른 모듈을 호출하는 패키지의 핵심 모듈입니다.  
+## 1장 프레임워크 구성  
+  
+![Framework](이미지 URL)  
+  
+본 모듈은 Camrera, LiDAR, GPS, IMU 등의 센서로부터 데이터를 입력받아 지역경로를 생성한 뒤 제어파트에 전달한다.  
+  
+Control_pkg는 메인 루프가 주기적으로 반복되며 다른 모듈을 호출하는 패키지의 핵심 모듈이다.  
 모든 input data는 콜백함수를 통해 Data Warehouse에 저장되고, EventHandler에서는 매 주기마다 호출되며   
-외부 환경에 따라 차량의 상태나 행동을 결정합니다.(본 프로젝트에서는 비활성화)  
-Path Maker는 읽어들인 전역경로와 현재 차량의 상태를 기반으로 지역경로를 생성합니다.
+외부 환경에 따라 차량의 상태나 행동을 결정한다.(본 프로젝트에서는 비활성화)  
+Path Maker는 읽어들인 전역경로와 현재 차량의 상태를 기반으로 지역경로를 생성한다.
 
 ## 2장 주요 기능
 ## 2_1 경로생성 및 사용
   
-본 모듈에서는 JSON형태로 직렬화된 경로 데이터를 파싱해서 사용한다. 
+본 모듈에서는 JSON형태로 직렬화된 경로 데이터를 파싱해서 사용한다.
 일반적으로 국토지리정보원에서 제공하는 정밀 도로지도의 shape파일을 직렬화하면 geoJson파일을 얻을 수 있는데, 확장자만 json으로 변경한 형태이다.  
   
-~경로 json파일 캡쳐이미지
+![jsons](https://user-images.githubusercontent.com/55074554/102065053-6b5a3a80-3e3b-11eb-8310-71a4b25c1fdc.png)
   
   
-Link json파일의 구조는 위와 같다. 여러 속성이 있지만 실제로 사용하는 것은 몇 되지 않는다.  
+Link json파일의 구조는 위와 같습니다. 여러 속성이 있지만 실제로 사용하는 것은 몇 개 되지 않는다.  
+  
 ID는 Link의 ID이고 L_LinID와 R_LinkID는 해당 Link의 좌, 우 차선 Link의 ID이다. (없으면 null로 표시됨)
 From, To NodeID는 해당 Link의 시작노드와 끝 노드의 ID이며, 아래 geometry의 coordinates속성은 해당 경로를 적절히 보간한 위치 데이터이다.  
+  
+  
 차량은 주기마다 자신의 현재 위치와 자신이 현재 주행중인 경로의 데이터를 비교해가며 자신의 지역경로를 생성하게 된다.  
 차선을 변경 할 때는 R,L LinkID를 탐색하고, 링크의 ToNode 지점에 일정 거리 이상 가까워지면 다음 경로의 LinkID를 받아와 사용하게 된다.
 
@@ -80,5 +86,12 @@ imu를 포함해서 칼만필터 등을 이용해 퓨전한다면 GPS의 Heading
 
 ![local](https://user-images.githubusercontent.com/55074554/102064236-6648bb80-3e3a-11eb-83db-891d2527b5f7.gif)
 
+흰색 점은 차량의 현재 위치, 파란색 점들은 미리 입력된 전역 경로이고, 빨간색 점들은 전역경로에서 일정 거리 단위로 샘플링한 경로 데이터이다.  
+차량의 위치와, 샘플링된 전역경로를 기반으로 만든 지역 경로는 분홍색 점으로 표현된다.  
+위에서 보다시피 전역경로에 수렴할 수 있는 지역경로가 좌표들의 집합으로 생성되는데, 제어측의 요청에 따라 이 좌표 데이터를 그대로 전송해도 되고,  
+이것을 3차함수로 근사시켜 전송할 수도 있다.  
+
 지역경로를 생성하는 알고리즘은 Frenet Optimal Trajectory알고리즘을 사용했다. [논문링크](http://video.udacity-data.com.s3.amazonaws.com/topher/2017/July/595fd482_werling-optimal-trajectory-generation-for-dynamic-street-scenarios-in-a-frenet-frame/werling-optimal-trajectory-generation-for-dynamic-street-scenarios-in-a-frenet-frame.pdf)  
-본 프레임워크는 경로를 샘플링한 후 좌표의 집합을 전송하거나, 샘플링된 좌표를 3차함수로 근사시켜 제어측에 제공한다.
+Frenet Optimal Trajectory모듈은 오픈소스로 제공되어있는데 파이썬으로 제작되어있어 cpp로 바꿀 필요가 있었다.  
+이 논문을 이해하고,  cpp로 변환하는작업에서 한국기술교육대학교의 정태응학우에게 큰 도움을 받았다.
+본 프레임워크는 경로를 샘플링한 후 좌표의 집합을 전송하거나, 샘플링된 좌표를 3차함수로 근사시켜 제어측에 제공한다.  
