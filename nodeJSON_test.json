@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "nodeJSON",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+    { "type": "Feature", "properties": { "ID": "A", "AdminCode": "233", "NodeType": "1", "ITSNodeID": null, "Maker": "새한항업컨소시엄", "UpdateDate": "20191121", "Version": "2019", "Remark": null, "HistType": null, "HistRemark": null }, "geometry": { "type": "Point", "coordinates": [ 126.767383186191665, 37.228109936353427, 6.452754150930179 ] } },
+    { "type": "Feature", "properties": { "ID": "B", "AdminCode": "233", "NodeType": "1", "ITSNodeID": null, "Maker": "새한항업컨소시엄", "UpdateDate": "20191121", "Version": "2019", "Remark": null, "HistType": null, "HistRemark": null }, "geometry": { "type": "Point", "coordinates": [ 126.767383186191665, 37.228109936353427, 6.452754150930179 ] } },
+    { "type": "Feature", "properties": { "ID": "C", "AdminCode": "233", "NodeType": "1", "ITSNodeID": null, "Maker": "새한항업컨소시엄", "UpdateDate": "20191121", "Version": "2019", "Remark": null, "HistType": null, "HistRemark": null }, "geometry": { "type": "Point", "coordinates": [ 126.767383186191665, 37.228109936353427, 6.452754150930179 ] } }
+
+    ]
+}
