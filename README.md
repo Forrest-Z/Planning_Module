@@ -34,21 +34,21 @@
 Control_pkg는 메인 루프가 주기적으로 반복되며 다른 모듈을 호출하는 패키지의 핵심 모듈이다.  
 모든 input data는 콜백함수를 통해 Data Warehouse에 저장되고, EventHandler에서는 매 주기마다 호출되며   
 외부 환경에 따라 차량의 상태나 행동을 결정한다.(본 프로젝트에서는 비활성화)  
-Path Maker는 읽어들인 전역경로와 현재 차량의 상태를 기반으로 지역경로를 생성한다.
+Path Maker는 읽어들인 전역경로와 현재 차량의 상태를 기반으로 지역경로를 생성한다.  
 
 ## 2장 주요 기능
 ## 2_1 경로생성 및 사용
   
-본 모듈에서는 JSON형태로 직렬화된 경로 데이터를 파싱해서 사용한다.
+본 모듈에서는 JSON형태로 직렬화된 경로 데이터를 파싱해서 사용한다.  
 일반적으로 국토지리정보원에서 제공하는 정밀 도로지도의 shape파일을 직렬화하면 geoJson파일을 얻을 수 있는데, 확장자만 json으로 변경한 형태이다.  
   
 ![jsons](https://user-images.githubusercontent.com/55074554/102065053-6b5a3a80-3e3b-11eb-8310-71a4b25c1fdc.png)
   
   
-Link json파일의 구조는 위와 같습니다. 여러 속성이 있지만 실제로 사용하는 것은 몇 개 되지 않는다.  
-  
-ID는 Link의 ID이고 L_LinID와 R_LinkID는 해당 Link의 좌, 우 차선 Link의 ID이다. (없으면 null로 표시됨)
-From, To NodeID는 해당 Link의 시작노드와 끝 노드의 ID이며, 아래 geometry의 coordinates속성은 해당 경로를 적절히 보간한 위치 데이터이다.  
+ID         - Link의 ID  
+L,R_LinkID - 해당 Link의 좌, 우 차선 Link의 ID(없으면 null로 표시됨)  
+From,To NodeID -  해당 Link의 시작노드와 끝 노드의 ID  
+geometry/coordinates - 해당 경로를 적절히 보간한 위치 데이터  
   
   
 차량은 주기마다 자신의 현재 위치와 자신이 현재 주행중인 경로의 데이터를 비교해가며 자신의 지역경로를 생성하게 된다.  
